@@ -1,5 +1,28 @@
 import Vue from 'vue'
 import App from './App'
+import {$http} from '@escook/request-miniprogram'
+
+uni.$http=$http
+
+$http.baseUrl='https://www.uinav.com'
+
+$http.beforeRequest=function(options){
+	uni.showLoading({
+		title:'数据加载中...'
+	})
+}
+
+$http.afterRequest=function(options){
+	uni.hideLoading()
+}
+
+uni.$showMsg=function(title='数据请求失败！',duration=1500){
+	return uni.showToast({
+		title:title,
+		duration:duration,
+		icon:'none'
+	})
+}
 
 Vue.config.productionTip = false
 
