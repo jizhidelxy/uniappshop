@@ -26,6 +26,7 @@
 </template>
 
 <script>
+	import {mapMutations,mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -53,13 +54,27 @@
 			const goods_id=options.goods_id
 			this.getGoodsDetail(goods_id)
 		},
+		computed:{
+			...mapGetters(['total'])
+		},
+		watch:{
+			total:{
+				handler(val){
+					let resultFind=this.options.find((item)=>item.text=='购物车')
+					resultFind.info=val
+				},
+				immediate:true
+			}
+		},
 		methods:{
+			...mapMutations(['addToCart']),
 			async getGoodsDetail(goods_id){
 				const {data:res} = await uni.$http.get('/api/public/v1/goods/detail',{goods_id:goods_id})
 				if(res.meta.status!==200) return uni.$showMsg()
 				
 				res.message.goods_introduce=res.message.goods_introduce.replace(/<img /g,'<img style="display:block" ')
 				this.goods_detail=res.message
+				console.log(this.goods_detail)
 			},
 			preview(i){
 				uni.previewImage({
@@ -75,7 +90,17 @@
 				}	
 			},
 			buttonClick(e){
-				
+				if(e.content.text==='加入购物车'){
+					const goods={
+						goods_id:this.goods_detail.goods_id,
+						goods_name:this.goods_detail.goods_name,
+						goods_price:this.goods_detail.goods_price,
+						goods_count:1,
+						goods_big_logo:this.goods_detail.goods_small_logo,
+						goods_state: true,
+					}
+					this.addToCart(goods)
+				}
 			}
 		}
 	}
