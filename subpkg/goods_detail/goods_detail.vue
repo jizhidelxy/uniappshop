@@ -74,7 +74,7 @@
 				
 				res.message.goods_introduce=res.message.goods_introduce.replace(/<img /g,'<img style="display:block" ')
 				this.goods_detail=res.message
-				console.log(this.goods_detail)
+				// console.log(this.goods_detail)
 			},
 			preview(i){
 				uni.previewImage({

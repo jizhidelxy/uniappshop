@@ -44,15 +44,16 @@
 		},
 		computed:{
 			...mapState({
-				cart:state=>state.cart.cart
+				cart:state=>state.cart.cart,
+				address:state=>state.user.address
 			})
 		},
 		methods:{
 			...mapMutations(['removeGoodsById']),
 			swiperHandler(goods){
 				this.removeGoodsById(goods)
-				console.log(this.cart)
-			}
+				// console.log(this.cart)
+			},
 		}
 	}
 </script>
